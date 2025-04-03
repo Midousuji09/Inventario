@@ -11,7 +11,7 @@ function crearProducto() {
     }
 
     // Enviar los datos al servidor
-    fetch("../../controllers/php/productos.php", {
+    fetch("../controllers/productos.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -42,7 +42,7 @@ function crearProducto() {
 }
 
 function cargarProductos() {
-    fetch("../../controllers/php/productos.php?action=obtenerProductos")
+    fetch("../controllers/productos.php?action=obtenerProductos")
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -97,7 +97,7 @@ function editarProducto(id, boton) {
         let precioProducto = Precio.textContent.trim();
         let stockProducto = Stock.textContent.trim();
 
-        fetch("../../controllers/php/productos.php", {
+        fetch("../controllers/productos.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -130,7 +130,7 @@ function editarProducto(id, boton) {
 function eliminarProducto(id) {
     if (!confirm("¿Estás seguro de eliminar este producto?")) return;
 
-    fetch("../../controllers/php/productos.php", {
+    fetch("../controllers/productos.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "eliminarProducto", IdProducto: id })

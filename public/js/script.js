@@ -12,7 +12,7 @@ function verificarLogin() {
         return;
     }
 
-    fetch("../../controllers/php/Usuario1.php", {
+    fetch("../controllers/Usuario1.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -27,9 +27,9 @@ function verificarLogin() {
             
             setTimeout(() => {
                 if (data.rol === "Comprador") {
-                    window.location.href = "../../vistas/html/Vista_Comprador.html"; 
+                    window.location.href = "../vistas/Vista_Comprador.html"; 
                 } else {
-                    window.location.href = "../../vistas/html/Inventario.html"; 
+                    window.location.href = "../vistas/Inventario.html"; 
                 }
             }, 2000);
         } else {
@@ -59,7 +59,7 @@ function registrarUsuario() {
     const NuevoRol = document.getElementById("NuevoRol").value;
     const NuevaPass = document.getElementById("NuevaPass").value;
 
-    fetch("../../controllers/php/Usuario1.php", {
+    fetch("../controllers/Usuario1.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -80,5 +80,137 @@ function registrarUsuario() {
     .catch(error => {
         console.error("Error en el registro:", error);
         document.getElementById("mensajeRegistro").textContent = "Error en el registro";
+    });
+}
+// Existing function to fetch and display profile data
+function mostrarPerfil() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("perfilModal").style.display = "block";
+    const action = "getPerfil";
+    
+    fetch("../controllers/Usuario1.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("nombre_usuario_perfil").value = data.nombre;
+            document.getElementById("apellido_usuario_perfil").value = data.apellido;
+            document.getElementById("email_usuario_perfil").value = data.email;
+            document.getElementById("telefono_usuario_perfil").value = data.telefono;
+            document.getElementById("rol_usuario_perfil").value = data.rol;
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Hubo un problema al obtener los datos del perfil.");
+    });
+}
+
+function cerrarPerfil() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('perfilModal').style.display = 'none';
+}
+
+function habilitar() {
+    document.getElementById("nombre_usuario_perfil").disabled = false;
+    document.getElementById("apellido_usuario_perfil").disabled = false;
+    document.getElementById("email_usuario_perfil").disabled = false;
+    document.getElementById("telefono_usuario_perfil").disabled = false;
+    document.getElementById("rol_usuario_perfil").disabled = false;
+}
+
+function modificarPerfil() {
+    const action = "modificar";
+    const nombre = document.getElementById("nombre_usuario_perfil").value;
+    const apellido = document.getElementById("apellido_usuario_perfil").value;
+    const email = document.getElementById("email_usuario_perfil").value;
+    const telefono = document.getElementById("telefono_usuario_perfil").value;
+    const rol = document.getElementById("rol_usuario_perfil").value;
+
+    fetch("../controllers/Usuario1.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action, nombre, apellido, email, telefono, rol })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Se modificaron los datos del usuario con éxito");
+            // Disable form fields
+            document.getElementById("nombre_usuario_perfil").disabled = true;
+            document.getElementById("apellido_usuario_perfil").disabled = true;
+            document.getElementById("email_usuario_perfil").disabled = true;
+            document.getElementById("telefono_usuario_perfil").disabled = true;
+            document.getElementById("rol_usuario_perfil").disabled = true;
+            
+            // Refresh profile data to ensure all information is displayed correctly
+            refreshProfileData();
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error al modificar el perfil:", error);
+        alert("Error al modificar el perfil. Por favor, inténtalo de nuevo más tarde.");
+    });
+}
+
+// New function to refresh profile data after changes
+function refreshProfileData() {
+    const action = "getPerfil";
+    
+    fetch("../controllers/Usuario1.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById("nombre_usuario_perfil").value = data.nombre;
+            document.getElementById("apellido_usuario_perfil").value = data.apellido;
+            document.getElementById("email_usuario_perfil").value = data.email;
+            document.getElementById("telefono_usuario_perfil").value = data.telefono;
+            document.getElementById("rol_usuario_perfil").value = data.rol;
+        } else {
+            console.error("Error refreshing profile data:", data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error refreshing profile data:", error);
+    });
+}
+function cerrarSesion() {
+    const action = "cerrarSesion";
+    fetch('../controllers/Usuario1.php', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Sesión cerrada correctamente');
+            window.location.href = '../vistas/IS.html'; // Redirigir al login
+        } else {
+            alert('Error al cerrar sesión: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al cerrar sesión');
     });
 }

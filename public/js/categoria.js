@@ -3,7 +3,7 @@ function guardarCategoria() {
     const nombreCategoria = document.getElementById("nombreCategoria").value;
     const descripcionCategoria = document.getElementById("descripcionCategoria").value;
 
-    fetch("../../controllers/php/categoria.php", {
+    fetch("../controllers/categoria.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, nombreCategoria, descripcionCategoria })
@@ -17,7 +17,7 @@ function guardarCategoria() {
     .catch(error => console.error("Error en fetch:", error));
 }
 function cargarCategoria() {
-    fetch("../../controllers/php/categoria.php?action=obtenerCategoria")
+    fetch("../controllers/categoria.php?action=obtenerCategoria")
     .then(response => response.json())
     .then(data => {
         if (data.success) {
@@ -58,7 +58,7 @@ function editarCategoria(id, boton) {
         let nombreCategoria = Nombre.textContent.trim();
         let descripcionCategoria = Descripcion.textContent.trim();
 
-        fetch("../../controllers/php/categoria.php", {
+        fetch("../controllers/php/categoria.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: "editarCategoria", IdCategoria: id, nombreCategoria, descripcionCategoria })
@@ -83,7 +83,7 @@ function eliminarCategoria(id) {
     if (!confirm("¿Estás seguro de eliminar este categoria?")) return;
 
     
-    fetch("../../controllers/php/categoria.php", {
+    fetch("../controllers/categoria.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "eliminarCategoria", IdCategoria: id })

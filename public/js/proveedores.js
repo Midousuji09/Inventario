@@ -5,7 +5,7 @@ function registrarProveedor() {
     const EmailProveedor = document.getElementById("EmailProveedor").value;
     const DireccionProveedor = document.getElementById("DireccionProveedor").value;
     
-    fetch("../../controllers/php/proveedores.php", {
+    fetch("../controllers/proveedores.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, NombreProveedor, TelefonoProveedor, EmailProveedor, DireccionProveedor })
@@ -26,7 +26,7 @@ function registrarProveedor() {
 }
 
 function cargarProveedores() {
-    fetch("../../controllers/php/proveedores.php?action=obtenerProveedores")
+    fetch("../controllers/proveedores.php?action=obtenerProveedores")
     .then(response => response.json())
     .then(data => {
         if (data.success) {
@@ -73,7 +73,7 @@ function editarProveedor(id, boton) {
         let EmailProveedor = Email.textContent.trim();
         let DireccionProveedor = Direccion.textContent.trim();
 
-        fetch("../../controllers/php/proveedores.php", {
+        fetch("../controllers/proveedores.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ action: "editarProveedor", IdProveedor: id, NombreProveedor, TelefonoProveedor, EmailProveedor, DireccionProveedor })
@@ -97,7 +97,7 @@ function editarProveedor(id, boton) {
 function eliminarProveedor(id) {
     if (!confirm("¿Estás seguro de eliminar este proveedor?")) return;
 
-    fetch("../../controllers/php/proveedores.php", {
+    fetch("../controllers/proveedores.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action: "eliminarProveedor", IdProveedor: id })
